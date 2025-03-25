@@ -37,7 +37,7 @@ function OrderScreen() {
     const script = document.createElement("script");
     script.type = "text/javascript";
     script.src =
-      "https://www.paypal.com/sdk/js?client-id=&currency=USD";
+      "https://www.paypal.com/sdk/js?client-id=ASHrELxVVBuColqB7O1aahOwoAGTexu6HyM4kwWftROXaU5LxUzLscgZ_SCEpsjVI2E94kHOKyulns9W"
     script.async = true;
     script.onload = () => {
       setSdkReady(true);
@@ -59,10 +59,21 @@ function OrderScreen() {
   }, [dispatch, orderId.id, order, successPay]);
 
 
-  const onApproveHandler = (data, actions) => {
+  const onApproveHandler = (paymentResult) => {
+    dispatch (payOrder (orderId.id, paymentResult))
   }
 
   const createOrderHandler = (data, actions) => {
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+          value: order.totalPrice,
+          currency_code: "USD",
+          }
+        }
+      ]
+    })
   };
   
   
@@ -199,7 +210,7 @@ function OrderScreen() {
                         <PayPalScriptProvider
                           options={{
                             "client-id":
-                              "",
+                              "ASHrELxVVBuColqB7O1aahOwoAGTexu6HyM4kwWftROXaU5LxUzLscgZ_SCEpsjVI2E94kHOKyulns9W",
                           }}
                         >
                           <PayPalButtons
